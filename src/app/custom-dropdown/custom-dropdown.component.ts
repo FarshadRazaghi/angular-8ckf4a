@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Options } from '../options';
 
@@ -6,9 +6,12 @@ import { Options } from '../options';
   selector: 'custom-dropdown',
   templateUrl: './custom-dropdown.component.html',
   styleUrls: ['./custom-dropdown.component.css'],
+  host: {
+    '(document:click)': 'onClick($event)',
+  },
 })
 export class CustomDropdownComponent implements OnInit {
-  constructor() {}
+  constructor(private _eref: ElementRef) {}
 
   public testForm: NgForm;
   public isDropDownOpen: boolean = false;
@@ -36,8 +39,9 @@ export class CustomDropdownComponent implements OnInit {
     console.clear();
     console.log(value);
     this.isDropDownOpen = true;
-    this.filteredOptions = this.options.filter((x) =>
-      x.value.toLowerCase().includes(value.toLowerCase())
+    this.filteredOptions = this.options.filter(
+      (x) =>
+        x.value.toLowerCase().includes(value.toLowerCase()) && x.key !== null
     );
 
     if (this.filteredOptions.length === 0) {
@@ -47,10 +51,23 @@ export class CustomDropdownComponent implements OnInit {
         isActive: false,
         selectable: false,
       });
+    } else {
+      this.filteredOptions.splice(0, 0, {
+        value: 'SELECT A VALUE',
+        isActive: false,
+        key: null,
+        selectable: true,
+      });
     }
 
     console.log(this.filteredOptions);
     console.log(this.options);
+  }
+
+  onClick(event) {
+    if (!this._eref.nativeElement.contains(event.target))
+      // or some similar check
+      this.isDropDownOpen = false;
   }
 
   toggleDropdown() {
