@@ -1,0 +1,39 @@
+.activeOption {
+  background-color: #0004ff;
+  color: white;
+}
+
+ul {
+  width: 100%;
+  overflow: auto;
+  max-height: 50vh;
+  position: absolute;
+  z-index: 2;
+  top: 100%;
+  left: 0;
+  border: 1px solid #ccc;
+}
+
+li {
+  color: black;
+}
+
+.list-group-item {
+  border: none;
+  border-bottom: 1px solid #ccc;
+}
+
+.list-group-item:last-child {
+  border-bottom: none;
+}
+
+.caret {
+  width: 0;
+  height: 0;
+  display: inline-block;
+  border: 5px solid transparent;
+  cursor: pointer;
+}
+.caret.down {
+  border-top-color: black;
+}
